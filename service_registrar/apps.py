@@ -44,7 +44,6 @@ class ServiceRegistrarAppConfig(AppConfig):
             print('Registry is not available\nService will not be registered but will be available locally')
 
         except Exception as e:
-            print(e)
             print(f'Failed to register service: ', e)
 
     def deregister_service(self):

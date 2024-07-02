@@ -43,7 +43,7 @@ class ServiceAddressMixin:
         """
         Create a response from an exception
         """
-        resp = Response({'detail': str(exc)}, status=exc.status_code or 500)
+        resp = Response({'detail': str(exc)}, status=exc.status_code if hasattr(exc, 'status_code') else 500)
         resp.accepted_renderer = JSONRenderer()
         resp.accepted_media_type = 'application/json'
         resp.renderer_context = {}
