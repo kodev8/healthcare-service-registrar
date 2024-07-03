@@ -11,11 +11,14 @@ class ServiceRegistrarAppConfig(AppConfig):
 
     name = 'service_registrar'
 
-    registry_url = os.getenv('REGISTRY_URL', 'http://localhost:5000')
+    registry_url = os.getenv('SERVICE_REGISTRY_URL')
     service_name =  service_id = os.getenv('SERVICE_NAME') # maybe add identifier like hostname for id
     service_port = os.getenv('SERVICE_PORT')
-    service_host = os.getenv('SERVICE_HOST', socket.gethostname())
+    service_host = os.getenv('SERVICE_HOST')
     service_address = f'http://{service_host}:{service_port}/api/{service_name}'
+
+    if any([not service_name, not service_port, not service_host, not registry_url]):
+        raise ValueError('SERVICE_NAME, PORT, HOST, SERVICE_REGISTRY_URL environment variables are required to register service')
     
 
     def ready(self) -> None:

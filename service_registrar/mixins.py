@@ -18,7 +18,7 @@ class ServiceAddressMixin:
         """
         Get the address of a service from the registry
         """
-        registry_url = os.getenv('SERVICE_REGISTRY_URL', 'http://localhost:5000')
+        registry_url = os.getenv('SERVICE_REGISTRY_URL') 
         try:
             healthresp = requests.get(f'{registry_url}/health')
             self.code = healthresp.status_code
@@ -47,6 +47,7 @@ class ServiceAddressMixin:
         resp.accepted_renderer = JSONRenderer()
         resp.accepted_media_type = 'application/json'
         resp.renderer_context = {}
+        resp.render()
         return resp
         
         
