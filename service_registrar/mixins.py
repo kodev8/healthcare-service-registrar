@@ -24,7 +24,7 @@ class ServiceAddressMixin:
             self.code = healthresp.status_code
             healthresp.raise_for_status()
 
-            resp = requests.get(f'{registry_url}/service/{service_name}')
+            resp = requests.get(f'{registry_url}/service/{service_name}', headers={'ServiceToken': os.getenv('ServiceToken')})
             self.code = resp.status_code
             resp.raise_for_status() 
 

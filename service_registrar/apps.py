@@ -15,7 +15,7 @@ class ServiceRegistrarAppConfig(AppConfig):
     service_name =  service_id = os.getenv('SERVICE_NAME') # maybe add identifier like hostname for id
     service_port = os.getenv('SERVICE_PORT')
     service_host = os.getenv('SERVICE_HOST')
-    service_address = f'http://{service_host}:{service_port}/api/{service_name}'
+    service_address = f'http://{service_host}:{service_port}/api/{rf"{service_name}/" if 'auth' not in service_name else "" }'
 
     if any([not service_name, not service_port, not service_host, not registry_url]):
         raise ValueError('SERVICE_NAME, PORT, HOST, SERVICE_REGISTRY_URL environment variables are required to register service')
@@ -39,8 +39,7 @@ class ServiceRegistrarAppConfig(AppConfig):
             if healthresp.status_code == 200:
                 resp = requests.post(f'{self.registry_url}/register', json=data)
                 if resp.status_code != 204 and resp.status_code != 201:
-                    print(resp.status_code)
-                    raise ValueError("lala")
+                    raise ValueError("Failed to register service")
                 print('Service registered successfully')
                 atexit.register(self.deregister_service)
         except requests.exceptions.ConnectionError:
